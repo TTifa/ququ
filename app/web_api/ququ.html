@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <title></title>
     <!-- <link rel="icon" type="image/png" href="res/logo.png" sizes="96x96" /> -->
-
     <style>
         body {
             background-color: #ddd;
         }
     </style>
-
     <style type="text/css">
         html{
             height: 100%;
@@ -78,143 +76,128 @@
                 background: #f25561 url(images/ic_close_w.png) center no-repeat;
             }
     </style>
-
 </head>
 <body>
-<div id="titlebar" class="bar">
-    <span class="paddinglr10">蛐蛐</span>
-    <span class="floatright">
-        <a id="titlebar_min" class="min"></a>
-        <a id="titlebar_max" class="max"></a>
-        <a id="titlebar_close" class="close"></a>
-    </span>
-    测试<br />
-</div>
+    <div id="titlebar" class="bar">
+        <span class="paddinglr10">蛐蛐</span>
+        <span class="floatright">
+            <a id="titlebar_min" class="min"></a>
+            <a id="titlebar_max" class="max"></a>
+            <a id="titlebar_close" class="close"></a>
+        </span>
+        测试<br />
+    </div>
+    <input type="button" id="test" value="测试" />
+    <input type="button" id="open_ie" value="打开支付页面" />
+    <input type="button" id="login" value="登录" />
+    <a href="http://www.baidu.com/" target="_self">Visit W3Schools</a>
+    <script>
+        onload = function () {
+            var iframe = document.createElement("iframe");
+            iframe.src = "http://www.baidu.com/";
 
-<input type="button" id="test" value="测试"/>
-<input type="button" id="open_ie" value="打开支付页面"/>
-<input type="button" id="login" value="登录"/>
-<a href="http://www.baidu.com/" target="_self">Visit W3Schools</a>
-
-<script>
-    onload = function() {
-        var iframe = document.createElement("iframe");
-        iframe.src = "http://www.baidu.com/";
-         
-        if (iframe.attachEvent){
-            iframe.attachEvent("onload", function(){
-                console.log("attach Local iframe is now loaded.");
-            });
-        } else {
-            iframe.onload = function(){
-                console.log("Local iframe is now loaded.");
-            };
-        }
-         
-        //document.body.appendChild(iframe);
-    }
-
-
-</script>
-
-
-<script>
-
-    function confirmUpdate(cb){
-        cb(true);
-    }
-
-
-    var gui = require('nw.gui');
-    var win = gui.Window.get();
-    var isMaximize = false;
-    win.on("maximize", function () {
-        isMaximize = true;
-    });
-    win.on("unmaximize", function() {
-        isMaximize = false;
-    });
-
-    var titlebar = document.getElementById("titlebar");
-    titlebar.onclick = function(e) {
-        var minimize = document.getElementById("titlebar_min");
-        var max = document.getElementById("titlebar_max");
-        var close = document.getElementById("titlebar_close");
-
-        if (e.target == minimize) {
-            win.minimize();
-        } else if (e.target == max) {
-            console.log("maximize");
-            if (isMaximize) {
-              win.unmaximize();
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", function () {
+                    console.log("attach Local iframe is now loaded.");
+                });
             } else {
-              win.maximize();
+                iframe.onload = function () {
+                    console.log("Local iframe is now loaded.");
+                };
             }
-        } else if (e.target == close) {
-            win.close();
+
+            //document.body.appendChild(iframe);
         }
-    };
+    </script>
+    <script>
+        function confirmUpdate(cb) {
+            cb(true);
+        }
 
-    var testButton = document.getElementById("test");
-    testButton.onclick = function() {
-      window.open("http://localhost:10012");
-    }
+        var gui = require('nw.gui');
+        var win = gui.Window.get();
+        var isMaximize = false;
+        win.on("maximize", function () {
+            isMaximize = true;
+        });
+        win.on("unmaximize", function () {
+            isMaximize = false;
+        });
 
+        var titlebar = document.getElementById("titlebar");
+        titlebar.onclick = function (e) {
+            var minimize = document.getElementById("titlebar_min");
+            var max = document.getElementById("titlebar_max");
+            var close = document.getElementById("titlebar_close");
 
-    var spawn = require('child_process').spawn;
-    /**
-     * @private
-     */
-    function run(path, args, options){
-      var opts = {
-        detached: true
-      };
-      for(var key in options){
-        opts[key] = options[key];
-      }
-      var sp = spawn(path, args, opts);
-      sp.unref();
-      return sp;
-    }
+            if (e.target == minimize) {
+                win.minimize();
+            } else if (e.target == max) {
+                console.log("maximize");
+                if (isMaximize) {
+                    win.unmaximize();
+                } else {
+                    win.maximize();
+                }
+            } else if (e.target == close) {
+                win.close();
+            }
+        };
 
+        var testButton = document.getElementById("test");
+        testButton.onclick = function () {
+            window.open("http://localhost:10012");
+        }
 
-    var openIEButton = document.getElementById("open_ie");
-    openIEButton.onclick = function() {
-      if (process.platform === 'win32') {
-        run("c:\\Program Files\\Internet Explorer\\iexplore.exe", ["www.baidu.com"]);
-      } else {
-        gui.Shell.openExternal("http://www.baidu.com/");
-      }
-    }
+        var spawn = require('child_process').spawn;
+        /**
+         * @private
+         */
+        function run(path, args, options) {
+            var opts = {
+                detached: true
+            };
+            for (var key in options) {
+                opts[key] = options[key];
+            }
+            var sp = spawn(path, args, opts);
+            sp.unref();
+            return sp;
+        }
 
-    var loginButton = document.getElementById("login");
+        var openIEButton = document.getElementById("open_ie");
+        openIEButton.onclick = function () {
+            if (process.platform === 'win32') {
+                run("c:\\Program Files\\Internet Explorer\\iexplore.exe", ["www.baidu.com"]);
+            } else {
+                gui.Shell.openExternal("http://www.baidu.com/");
+            }
+        }
 
+        var loginButton = document.getElementById("login");
+        loginButton.onclick = function () {
+            console.log("login....");
+            //打开登陆后的主窗口
+            //url = "app://ququ.com/loading/loading.html";
+            url = "../loading/loading.html";
+            gui.Window.open(url, {
+                "min_width": 900,
+                "min_height": 600,
+                "width": 900,
+                "height": 600,
+                "show": true,
+                "frame": true,
+                "title": 'ququ',
+                "focus": true
+            }, function (mainWindow) {
+                process.mainModule.exports.loadURL(mainWindow, "http://www.baidu.com/");
+                //主窗口只隐藏不关闭
+                process.mainModule.exports.setMainWindow(mainWindow);
+                //关闭当前窗口
+                win.close(true);
+            });
+        }
 
-    loginButton.onclick = function() {
-
-      console.log("login....");
-      //打开登陆后的主窗口
-      //url = "app://ququ.com/loading/loading.html";
-      url = "../loading/loading.html";
-      var mainWindow = gui.Window.open(url, {
-          "min_width": 900,
-          "min_height": 600,
-          "width": 900,
-          "height": 600,
-          "show":true,
-          "frame":true,
-          "title":'ququ',
-          "focus": true
-      });
-      process.mainModule.exports.loadURL(mainWindow, "http://www.baidu.com/");
-
-      //主窗口只隐藏不关闭
-      process.mainModule.exports.setMainWindow(mainWindow);
-      //关闭当前窗口
-      win.close(true);
-    }
-
-</script>
-
+    </script>
 </body>
 </html>

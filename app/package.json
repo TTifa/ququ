@@ -9,6 +9,7 @@
   "single-instance": false,
   "node-remote": "<all_urls>",
   "window": {
+    "title": "ququ",
     "min_width": 900,
     "min_height": 602,
     "width": 900,
@@ -16,7 +17,7 @@
     "icon": "res/logo.png",
     "resizable": true,
     "frame": true,
-    "show": true
+    "show": false
   },
   "webkit": {
     "plugin": true

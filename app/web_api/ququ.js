@@ -1,9 +1,5 @@
-/**
- * Created by zhanghedong on 15/9/23.
- */
 (function () {
     "use strict";
-
 
     window.Qu = window.Qu || {};
     //var ua = navigator.userAgent.toLowerCase();
@@ -11,9 +7,9 @@
 
     var gui = require('nw.gui');
     var mainWindow = process.mainModule.exports.mainWindow;
-
-    mainWindow.on("focus", function() {
-        Qu.tray.clearNew();
+    mainWindow.on("focus", function () {
+        if (Qu.tray)
+            Qu.tray.clearNew();
     });
 
     var launch = require("./web_api/launch.js");
@@ -36,7 +32,6 @@
     var tray = null;
     var timer = 0;
     window._nwrequire = require;
-
 
     function showNotification(title, body) {
         // Let's check if the browser supports notifications
@@ -71,9 +66,10 @@
         myAud.play();
     }
 
-    var hubConnection = $.hubConnection("http://192.168.31.61:10086");
+    var hubConnection = $.hubConnection("http://192.168.31.66:10086");
     //hubConnection.qs = { };//需要传递QueryString参数
     var hubProxy = hubConnection.createHubProxy("chat");
+
     hubConnection.stateChanged(function (state) {
         console.log("状态：[" + state.newState + "," + state.oldState);
     });
@@ -95,7 +91,7 @@
         console.log("正在连接...");
     });
     //接收消息
-    hubProxy.on("Receive", function (message) {
+    hubProxy.on("sendMessage", function (message) {
         console.log(message);
         showNotification("ququ", message);
         if (!cfg.silent) {
@@ -105,7 +101,7 @@
     });
 
     Qu.connect = function () {
-        hubConnection.start({transport: ["webSockets", "serverSentEvents", "longPolling", "foreverFrame"]}).done(function () {
+        hubConnection.start({ transport: ["webSockets", "serverSentEvents", "longPolling", "foreverFrame"] }).done(function () {
             console.log("连接成功，开始接收消息...");
         }).fail(function (error) {
             console.log("连接出错：" + error);
@@ -115,10 +111,8 @@
 
     //发送测试消息
     Qu.send = function () {
-        hubProxy.invoke("Send");
+        hubProxy.invoke("Send","helloworld");
     };
-
-
     Qu.close = function () {
         mainWindow.close();
     };
@@ -129,10 +123,10 @@
     Qu.tray = {
         init: function (cb) {
             tray = tray || new gui.Tray({
-                    title: '',
-                    icon: './res/tray.png',
-                    iconsAreTemplates: false
-                });
+                title: '',
+                icon: './res/tray.png',
+                iconsAreTemplates: false
+            });
 
             tray.on("click", function () {
                 mainWindow.show();
@@ -212,6 +206,7 @@
         clearNew: function () {
             clearInterval(timer);
             timer = 0;
+            //console.log(tray);
             tray.icon = './res/tray.png';
         },
         close: function () {

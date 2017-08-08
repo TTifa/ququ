@@ -11,7 +11,6 @@ var newWin = null,
 gui.App.clearCache(); // 清除缓存
 //让加载页窗口跳转到newWin后台打开的项目首页（可直接复用缓存到浏览器中的项目首页资源）
 function loadContentInCurrentWindow(currentWin, appUrl) {
-    console.log(appUrl);
     currentWin.window.location.href = appUrl;
 }
 
@@ -37,9 +36,7 @@ function startLoadApp() {
     reloadAppRes();
 }
 
-
 isConnected = navigator.onLine;
-
 
 var checkNetStatus = function () {
     isConnected = navigator.onLine;
