@@ -71,9 +71,9 @@
         myAud.play();
     }
 
-    var hubConnection = $.hubConnection("http://117.27.143.80");
+    var hubConnection = $.hubConnection("http://192.168.31.61:10086");
     //hubConnection.qs = { };//需要传递QueryString参数
-    var hubProxy = hubConnection.createHubProxy("HubTest");
+    var hubProxy = hubConnection.createHubProxy("chat");
     hubConnection.stateChanged(function (state) {
         console.log("状态：[" + state.newState + "," + state.oldState);
     });

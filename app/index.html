@@ -4,72 +4,88 @@
     <title>蛐蛐</title>
     <meta content="text/html" charset="utf-8">
 </head>
-
 <body>
-<script src="index.js" type="text/javascript"></script>
-<script type="text/javascript">
-  var gui = require('nw.gui');
-  var currentWin = gui.Window.get();
-  var backgroundUrl = gui.App.manifest.backgroundUrl;
-  var gui = require('nw.gui');
+    <div>index</div>
+    <script src="index.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        console.log('start');
+        var gui = require('nw.gui');
+        var currentWin = gui.Window.get();
+        var backgroundUrl = gui.App.manifest.backgroundUrl;
+        var gui = require('nw.gui');
 
-  var backgroundWin;
-  var mainWindow;
+        var backgroundWin;
+        var mainWindow;
 
-  function createAppWindow() {
+        //显示加载页面， 在新窗口加载url
+        function loadURL(url) {
+            win = gui.Window.open("loading/loading.html?url=" + url, {
+                "fullscreen": false,
+                "title": "index",
+                "width": 900,
+                "height": 600,
+                "show": true,
+                "frame": true,
+                "focus": true,
+                "resizable": true
+            });
 
-    backgroundWin = gui.Window.open(backgroundUrl, {
-        "show":false
-    });
-
-    mainWindow = gui.Window.open("loading/loading.html", {
-        "min_width": 300,
-        "min_height": 200,
-        "width": 300,
-        "height": 200,
-        "show":true,
-        "frame":true,
-        "titlebar":true,
-        "focus": true,
-        "toolbar":true
-    });
-
-    gui.App.on('reopen', function () {
-        console.log("app reopen...");
-        var win = process.mainModule.exports.mainWindow;
-        if (win) {
-           win.show();
+            return win;
         }
-    });
+        function createAppWindow() {
+            gui.Window.open(backgroundUrl, {
+                "show": false
+            }, function (win) {
+                backgroundWin = win;
+                backgroundWin.once("loaded", function () {
+                    console.log("clear reloadTimer");
+                    clearInterval(reloadTimer);
+                });
+                var reloadTimer = setInterval(function () {
+                    console.log("reload load background page");
+                    backgroundWin.window.location.href = backgroundUrl;
+                }, 20 * 1000);
+            });
 
-    backgroundWin.once("loaded", function() {
-        console.log("clear reloadTimer");
-        clearInterval(reloadTimer);
-    });
+            mainWindow = loadURL(gui.App.manifest.appUrl);
 
-    var reloadTimer = setInterval(function () {
-        console.log("reload load background page");
-        backgroundWin.window.location.href = backgroundUrl;
-    }, 20 * 1000);
+            gui.App.on('reopen', function () {
+                console.log("app reopen...");
+                var win = process.mainModule.exports.mainWindow;
+                if (win) {
+                    win.show();
+                }
+            });
 
-    process.mainModule.exports.setMainWindow(mainWindow);
-    process.mainModule.exports.backgroundWindow = backgroundWin;
-  }
+            var checkTimer = setInterval(function () {
+                var mainWin = process.mainModule.exports.mainWindow;
+                if (mainWin) {
+                    var ref = mainWin.window.location.href;
+                    if (ref == "data:text/html,chromewebdata") {
+                        console.log("load error");
+                        mainWin.window.location.href = "loading/loading_error.html";
+                    }
+                }
+            }, 2 * 1000);
 
-  if(gui.App.argv.length == 0) {
-      process.mainModule.exports.dataPath = gui.App.dataPath;
-      process.mainModule.exports.main();
-      if (process.mainModule.exports.firstStart != true) {
-        var checkTimer = setInterval(function() {
-          if (process.mainModule.exports.firstStart) {
-            clearInterval(checkTimer);
-            createAppWindow();
-          }
-        }, 10);
-      } else {
-        createAppWindow();
-      }
-  }
-</script>
+            process.mainModule.exports.setMainWindow(mainWindow);
+            process.mainModule.exports.backgroundWindow = backgroundWin;
+        }
+
+        if (gui.App.argv.length == 0) {
+            process.mainModule.exports.dataPath = gui.App.dataPath;
+            process.mainModule.exports.main();
+            if (process.mainModule.exports.firstStart != true) {
+                var checkTimer = setInterval(function () {
+                    if (process.mainModule.exports.firstStart) {
+                        clearInterval(checkTimer);
+                        createAppWindow();
+                    }
+                }, 10);
+            } else {
+                createAppWindow();
+            }
+        }
+    </script>
 </body>
 </html>

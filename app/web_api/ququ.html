@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <!-- <link rel="icon" type="image/png" href="res/logo.png" sizes="96x96" /> -->
+
     <style>
         body {
             background-color: #ddd;
@@ -10,8 +12,16 @@
     </style>
 
     <style type="text/css">
+        html{
+            height: 100%;
+            border:2px solid #f60;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
         body {
             padding: 0;
+            height: 100%;
+            overflow: auto;
             margin: 0;
             font-size: 13px;
         }
@@ -78,15 +88,38 @@
         <a id="titlebar_max" class="max"></a>
         <a id="titlebar_close" class="close"></a>
     </span>
+    测试<br />
 </div>
-
-</script>
 
 <input type="button" id="test" value="测试"/>
 <input type="button" id="open_ie" value="打开支付页面"/>
 <input type="button" id="login" value="登录"/>
+<a href="http://www.baidu.com/" target="_self">Visit W3Schools</a>
 
 <script>
+    onload = function() {
+        var iframe = document.createElement("iframe");
+        iframe.src = "http://www.baidu.com/";
+         
+        if (iframe.attachEvent){
+            iframe.attachEvent("onload", function(){
+                console.log("attach Local iframe is now loaded.");
+            });
+        } else {
+            iframe.onload = function(){
+                console.log("Local iframe is now loaded.");
+            };
+        }
+         
+        //document.body.appendChild(iframe);
+    }
+
+
+</script>
+
+
+<script>
+
     function confirmUpdate(cb){
         cb(true);
     }
@@ -124,8 +157,7 @@
 
     var testButton = document.getElementById("test");
     testButton.onclick = function() {
-      window.open("http://www.baidu.com/");
-      alert("test");
+      window.open("http://localhost:10012");
     }
 
 
@@ -156,19 +188,26 @@
     }
 
     var loginButton = document.getElementById("login");
+
+
     loginButton.onclick = function() {
+
+      console.log("login....");
       //打开登陆后的主窗口
-      var mainWindow = gui.Window.open("ququ_main.html", {
+      //url = "app://ququ.com/loading/loading.html";
+      url = "../loading/loading.html";
+      var mainWindow = gui.Window.open(url, {
           "min_width": 900,
-          "min_height": 602,
+          "min_height": 600,
           "width": 900,
-          "height": 602,
+          "height": 600,
           "show":true,
           "frame":true,
-          "titlebar":true,
-          "focus": true,
-          "toolbar":true
+          "title":'ququ',
+          "focus": true
       });
+      process.mainModule.exports.loadURL(mainWindow, "http://www.baidu.com/");
+
       //主窗口只隐藏不关闭
       process.mainModule.exports.setMainWindow(mainWindow);
       //关闭当前窗口

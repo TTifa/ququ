@@ -19,6 +19,9 @@ exports.dataPath = null;
 
 exports.setMainWindow = function(mainWin) {
     exports.mainWindow = mainWin;
+    if (!exports.mainWindow) {
+        return;
+    }
     exports.mainWindow.on("close", function (quit) {
         if (quit) {
             console.log("close main window");
@@ -28,6 +31,14 @@ exports.setMainWindow = function(mainWin) {
             this.hide();
         }
     });
+}
+
+//显示加载页面， 在新窗口加载url
+exports.loadURL = function(win, url) {
+  win.once("loaded", function() {
+     win.window.postMessage(url, "*");
+  });
+  return win;  
 }
 
 function getLogFilePath() {
