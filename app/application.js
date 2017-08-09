@@ -19,6 +19,9 @@ exports.dataPath = null;
 
 exports.setMainWindow = function(mainWin) {
     exports.mainWindow = mainWin;
+    if (!exports.mainWindow) {
+        return;
+    }
     exports.mainWindow.on("close", function (quit) {
         if (quit) {
             console.log("close main window");
@@ -28,6 +31,14 @@ exports.setMainWindow = function(mainWin) {
             this.hide();
         }
     });
+}
+
+//显示加载页面， 在新窗口加载url
+exports.loadURL = function(win, url) {
+  win.once("loaded", function() {
+     win.window.postMessage(url, "*");
+  });
+  return win;  
 }
 
 function getLogFilePath() {
@@ -93,3 +104,37 @@ function main() {
 }
 
 exports.main = main;
+
+var hasSaved = {};//是否已经触发过这个错误
+process.on("uncaughtException", function (e) {
+    var errText = e.stack;
+    var fs = require('fs');
+    var md5 = require('MD5');
+    var key = md5(errText);
+
+    if (hasSaved[key]) {
+        return;
+    }
+    if (window && window.localStorage) {
+        var historyError = window.localStorage.getItem('_uncaughtException_' + key);
+        if (historyError != null) {
+            return;//曾经触发过这个BUG 忽略
+        }
+    }
+    if (errText.match(/dns.js|net.js/) != null) {
+        return;//网络原因引起的BUG 忽略
+    }
+
+    hasSaved[key] = true;
+    if (window && window.localStorage) {
+        var historyError = window.localStorage.setItem('_uncaughtException_' + key, errText);
+    }
+    var nwPath = process.cwd();
+    var date = new Date();
+    var errText = "\r\n## 日期：" + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() +
+        "\r\n##### 客户端版本： V" + process._nw_app.manifest.version +
+        "\r\n##### 错误详情： \r\n```javascript\r\n" + errText + "\r\n```\r\n";
+    fs.appendFile(nwPath + '/error.log', errText, function (err) {
+        if (err) throw err;
+    });
+});

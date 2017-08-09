@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>蛐蛐</title>
+    <meta content="text/html" charset="utf-8">
+    <style>
+        .page {
+            background-size: cover;
+            background: url("bg3.png") no-repeat;
+            margin: 0;
+        }
+
+        #header {
+            width: 100%;
+            height: 59px;
+            position: relative;
+            -webkit-app-region: drag;
+        }
+
+        .close {
+            float: right;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            margin-top: 5px;
+            margin-right: 5px;
+            -webkit-app-region: no-drag;
+        }
+
+        .close img {
+            width: 100%;
+        }
+
+        .loadingImg {
+            width: 64px;
+            height: 64px;
+            margin: 200px auto 0;
+
+        }
+
+        .loadingImg img {
+            width: 64px;
+            -webkit-transform: perspective(150px) rotateY(0) scale(1);
+            -webkit-transition: all 2s ease;
+        }
+
+        .loadingText {
+
+            color: #ffffff;
+            margin: 30px auto 0;
+            width: 300px;
+            text-align: center;
+        }
+
+        .reload-btn {
+            margin: 20px auto;
+            width: 80px;
+            padding: 6px 0;
+            border: 2px solid #71c3fd;
+            text-align: center;
+            border-radius: 5px;
+            color: #71c3fd;
+            cursor: pointer;
+            display: block;
+        }
+
+        body {
+            font-family: "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="page">
+<div id="header">
+    <div class="close">
+        <img src="close.png"/>
+    </div>
+</div>
+<div class="loadingImg">
+    <img src="logo.png" id="loading-img"/>
+</div>
+<div class="loadingText" id="loadingText">现在网络不稳定哦，检查您的网络吧！</div>
+<div class="reload-btn" id="reloadBtn">重新加载</div>
+
+
+<script type="text/javascript">
+
+    var loadingText = document.getElementById('loadingText');
+    var loadingImg = document.getElementById('loading-img');
+    var reloadBtn = document.getElementById('reloadBtn');
+    document.querySelector(".close").addEventListener("click", function () {
+        var gui = require('nw.gui');
+        gui.App.quit();
+    });
+    function setLoadingText(msg) {
+        loadingText.innerHTML = msg;
+    }
+
+    reloadBtn.addEventListener('click', function () {
+        setLoadingText('加载中...');
+        reloadBtn.style.display = 'none';
+        window.history.back();
+    });
+
+    function animateLoading() {
+        var flag = false;
+
+        function animateHandle() {
+            if (!flag) {
+                loadingImg.style.webkitTransform = 'perspective(100px) rotateY(360deg) scale(1.8)';
+
+                flag = true;
+            } else {
+                loadingImg.style.webkitTransform = 'perspective(100px) rotateY(0deg) scale(1)';
+                flag = false;
+            }
+        }
+
+        setTimeout(function () {
+            animateHandle();
+        }, 0);
+
+        setInterval(function () {
+            animateHandle();
+        }, 2000);
+    }
+    animateLoading();
+
+    var checkNetStatus = function() {
+        var isConnected = navigator.onLine;
+        if (isConnected) {
+            window.history.back();
+        }
+    };
+     
+    window.addEventListener('online',  checkNetStatus);
+
+
+</script>
+
+
+</body>
+</html>

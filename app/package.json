@@ -1,20 +1,21 @@
 {
   "name": "ququ",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.html",
   "node-main": "application.js",
   "description": "ququ",
   "productName": "ququ",
   "user-agent": "Mozilla/5.0 (%osinfo) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%webkit_ver Safari/537.36 nw",
-  "single-instance": false,
+  "single-instance": true,
+  "node-remote": "<all_urls>",
   "window": {
+    "title": "ququ",
     "min_width": 900,
     "min_height": 602,
     "width": 900,
     "height": 602,
     "icon": "res/logo.png",
     "resizable": true,
-    "toolbar": true,
     "frame": true,
     "show": false
   },
@@ -22,20 +23,19 @@
     "plugin": true
   },
   "dependencies": {
-    "node-webkit-updater": "^0.2.4",
+    "node-webkit-updater": "^0.3.3",
     "request": "^2.63.0",
-    "winreg": "0.0.12"
+    "winreg": "1.2.4"
   },
   "backgroundUrl": "web_api/tray.html",
-  "appUrl": "web_api/ququ.html",
-
-  "manifestUrl": "http://192.168.1.215:81/static/package.json",
+  "appUrl": "/web_api/ququ.html",
+  "manifestUrl": "http://localhost:10012/upload/package.json",
   "packages": {
-      "mac": {
-          "url": "http://localhost:81/static/ququ_mac_v0.0.1.zip"
-      },
-      "win": {
-          "url": "http://localhost:81/static/ququ_win_v0.0.1.zip"
-      }
+    "mac": {
+      "url": "http://localhost:81/static/ququ_mac_v0.0.1.zip"
+    },
+    "win": {
+      "url": "http://localhost:10012/upload/ququ_setup.exe"
+    }
   }
 }
