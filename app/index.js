@@ -25,7 +25,6 @@ if (gui.App.argv.length) {
             upd.download(function (error, filename) {
                 console.log("download err:" + error);
                 if (!error) {
-                    console.log("downloaded");
                     var mainWindow = process.mainModule.exports.mainWindow;
                     if (!mainWindow.window.confirmUpdate) {
                         return;
@@ -35,6 +34,7 @@ if (gui.App.argv.length) {
                             return;
                         }
                         if (process.platform == "win32") {
+                            filename = filename.replace(/\\/g, "/");
                             gui.Shell.openItem(filename);
                             gui.App.quit();
                         } else {

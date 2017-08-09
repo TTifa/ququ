@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ququ"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "FuZhouWangSuo"
 #define MyAppURL "http://www.wangsuo.com/"
 #define MyAppExeName "ququ.exe"

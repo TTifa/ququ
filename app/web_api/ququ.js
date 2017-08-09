@@ -66,7 +66,7 @@
         myAud.play();
     }
 
-    var hubConnection = $.hubConnection("http://192.168.31.66:10086");
+    var hubConnection = $.hubConnection("http://localhost:10086");
     //hubConnection.qs = { };//需要传递QueryString参数
     var hubProxy = hubConnection.createHubProxy("chat");
 
