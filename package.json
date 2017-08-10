@@ -3,7 +3,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-nw-builder": "^3.1.0",
-    "grunt-appdmg": "^0.3.2",
+    "grunt-appdmg": "^1.0.0",
     "grunt-zip": "^0.17.1"
   }
 }

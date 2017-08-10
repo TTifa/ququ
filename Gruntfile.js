@@ -2,7 +2,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         nwjs: {
             options: {
-                platforms: ['osx'],
+                platforms: ['osx64'],
                 buildDir: './dist',
                 version: '0.23.7',
                 macIcns: "assets/osx/panda.icns",
