@@ -4,7 +4,7 @@ module.exports = function(grunt) {
             options: {
                 platforms: ['osx64'],
                 buildDir: './dist',
-                version: '0.23.7',
+                version: '0.22.3',
                 macIcns: "assets/osx/panda.icns",
                 macPlist: {
                     "CFBundleIdentifier":"com.wangsuo.ququ",
