@@ -29,13 +29,14 @@
   },
   "backgroundUrl": "web_api/tray.html",
   "appUrl": "/web_api/ququ.html",
-  "manifestUrl": "http://localhost:10012/upload/package.json",
+  "manifestUrl": "http://192.168.31.59:10012/upload/package.json",
   "packages": {
     "mac": {
-      "url": "http://localhost:81/static/ququ_mac_v0.0.1.zip"
+      "url": "http://192.168.31.59:10012/upload/ququ_mac_v0.0.1.zip",
+      "execPath": "ququ.dmg"
     },
     "win": {
-      "url": "http://localhost:10012/upload/ququ_setup.exe"
+      "url": "http://192.168.31.59:10012/upload/ququ_setup.exe"
     }
   }
 }
